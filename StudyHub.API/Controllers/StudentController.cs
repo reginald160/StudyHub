@@ -25,6 +25,11 @@ namespace StudyHub.API.Controllers
 			_mediator = mediator;
 		}
 
+		/// <summary>
+		/// Gets the list of all rergistered students
+		/// </summary>
+		/// <param name="token"></param>
+		/// <returns></returns>
 		[HttpGet("[action]")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(201, Type = typeof(IEnumerable<StudentIndexDTO>))]
@@ -79,19 +84,19 @@ namespace StudyHub.API.Controllers
 			if (ModelState.IsValid)
 			{
 				var result = await _mediator.Send(new CreateStudent.Command { Student = request });
-				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : Unauthorized(result);
+				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : BadRequest(result);
 			}
 			return BadRequest(ModelState);
 		}
 
 
 		[HttpPatch("[action]")]
-		[ProducesResponseType(201, Type = typeof(NumenclatureDTO))]
+		[ProducesResponseType(201, Type = typeof(UpdatStudentDTO))]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		[ProducesDefaultResponseType]
-		public async Task<IActionResult> UpdateCourse([FromBody] NumenclatureDTO request)
+		public async Task<IActionResult> UpdateStudent([FromBody] UpdatStudentDTO request)
 		{
 			if (ModelState.IsValid)
 			{

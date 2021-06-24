@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static StudyHub.Domain.Enum.DomainEnum;
 
 namespace StudyHub.Application.Mapper
 {
@@ -16,9 +17,12 @@ namespace StudyHub.Application.Mapper
 		{
 			CreateMap<Course, CourseUtilityDTO>().ReverseMap();
 			CreateMap<Course, UpdateCourseDTO>().ReverseMap();
-			CreateMap<RegistrationDTO, StudentRegistration>().ReverseMap();
-			CreateMap<RegistrationDTO, TeachersRegistration>().ReverseMap();
-			CreateMap<CourseRegistration, RegistrationDTO>().ReverseMap();
+			CreateMap<RegistrationDTO, StudentRegistration>()
+				.ReverseMap();
+			CreateMap<RegistrationDTO, TeachersRegistration>()
+				.ReverseMap();
+			CreateMap<CourseRegistration, RegistrationDTO>()
+				.ReverseMap();
 		}
 	}
 }

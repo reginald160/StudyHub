@@ -38,59 +38,52 @@ namespace StudyHub.Application.CQRS.CourseRegistrationCQRS.Command
 			{	
 
 				try
-				{	
-					if(!request.Registration.TeacherId.Equals(null))
+				{   //Teachers course registration
+					if (!request.Registration.TeacherId.Equals(null))
 					{
+
 						int teacherRegCourseCount = _context.CourseRegistrations.Where(x => x.TeacherId.Equals(request.Registration.TeacherId))
 										.Where(x => x.CourseId.Equals(request.Registration.CourseId)).Count();
-						if (teacherRegCourseCount > 1)
+
+						if (teacherRegCourseCount >= 1)
 							return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnUniqueCourse,
 								ResponseStatus.Failed, ResponseCode.Unathorized);
 
 
 						int teacherRegCount = _context.CourseRegistrations
-										.Where(x => x.Teacher.Equals(request.Registration.TeacherId)).Count();
-						if (teacherRegCount > 1)
+										.Where(x => x.TeacherId.Equals(request.Registration.TeacherId)).Count();
+						if (teacherRegCount >= 3)
+							return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnCourseOverFlow,
+								ResponseStatus.Failed, ResponseCode.Unathorized);
+						request.Registration.Entity = RegistrationEntity.Teacher;
+
+					}
+					//Students course registration
+					else
+					{
+						int studentRegCourseCount = _context.CourseRegistrations.Where(x => x.StudentId.Equals(request.Registration.StudentId))
+										.Where(x => x.CourseId.Equals(request.Registration.CourseId)).Count();
+
+						if (studentRegCourseCount >= 1)
+							return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnUniqueCourse,
+								ResponseStatus.Failed, ResponseCode.Unathorized);
+
+						int studentRegCount = _context.CourseRegistrations.Where(x => x.StudentId.Equals(request.Registration.StudentId)).Count();
+
+						if (studentRegCount >= 3)
 							return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnCourseOverFlow,
 								ResponseStatus.Failed, ResponseCode.Unathorized);
 
-						
-
-
-						var teacherReg = _mapper.Map<CourseRegistration>(request.Registration);
-						teacherReg.CreatedDate = DateTimeOffset.Now;
-						teacherReg.Entity = RegistrationEntity.Teacher;
-						await _context.CourseRegistrations.AddAsync(teacherReg);
-						await _context.SaveChangesAsync();
-						response.RegistrationId = LogicHelper.GetRegistrationId();
-						request.Registration.StudentId = Guid.Empty;
-
-						return ResponseData.OnSuccess(request.Registration);
+						request.Registration.Entity = RegistrationEntity.Student;
 					}
 
-
-					int studentRegCourseCount = _context.CourseRegistrations.Where(x => x.StudentId.Equals(request.Registration.StudentId))
-										.Where(x => x.CourseId.Equals(request.Registration.CourseId)).Count();
-
-					if (studentRegCourseCount > 1)
-						return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnUniqueCourse,
-							ResponseStatus.Failed, ResponseCode.Unathorized);
-
-					int studentRegCount = _context.CourseRegistrations.Where(x => x.StudentId.Equals(request.Registration.StudentId)).Count();
-
-					if (studentRegCount > 3)
-						return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnCourseOverFlow,
-							ResponseStatus.Failed, ResponseCode.Unathorized);
-
+					
 					var record = _mapper.Map<CourseRegistration>(request.Registration);
 					record.CreatedDate = DateTimeOffset.Now;
-					record.Entity = RegistrationEntity.Student;
 					await _context.CourseRegistrations.AddAsync(record);
 					await _context.SaveChangesAsync();
-					response.RegistrationId = LogicHelper.GetRegistrationId();
-					request.Registration.TeacherId = Guid.Empty;
 
-					return ResponseData.OnSuccess(request.Registration);
+					return ResponseData.OnSuccess(record);
 				}
 				catch (Exception exp)
 				{

@@ -15,7 +15,7 @@ namespace StudyHub.Application.Mapper
 		public StudentMap()
 		{	
 			CreateMap<Student, CreateStudentsDTO>().ReverseMap();
-			CreateMap<Student, NumenclatureDTO>().ReverseMap();
+			CreateMap<Student, UpdatStudentDTO>().ReverseMap();
 			CreateMap<Student, StudentIndexDTO>().ReverseMap();
 		}
 	}

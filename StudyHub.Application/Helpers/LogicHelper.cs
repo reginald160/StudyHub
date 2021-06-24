@@ -39,6 +39,13 @@ namespace StudyHub.Application.Helpers
 			var day = DateTime.Now.Day.ToString();
 			return DateTime.Now.Year.ToString() + year + day + DateTime.Now.ToString("ddmmyyhhmmss");
 		}
+
+		public static bool IsValidGuid(string value)
+		{
+			Guid x;
+			return Guid.TryParse(value, out x);
+		}
+
 		public static string GetStaffCode(ApplicationDbContext _context)
 		{
 			string result = String.Empty;
@@ -46,7 +53,7 @@ namespace StudyHub.Application.Helpers
 
 			try
 			{
-				int counter = 1;
+				int counter = 0;
 				var numberSequence = _context.NumberSequences
 					.Where(x => x.Module.Equals(module))
 					.FirstOrDefault();

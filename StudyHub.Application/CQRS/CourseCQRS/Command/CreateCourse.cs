@@ -53,7 +53,6 @@ namespace StudyHub.Application.CQRS.CourseRegistrationCQRS.Command
 				}
 				catch (Exception exp)
 				{
-					//Returns response with the full viewmodel data when the save operations fails
 					return ResponseData.OnFailureResponse(request.Course, exp.Message);
 				}
 

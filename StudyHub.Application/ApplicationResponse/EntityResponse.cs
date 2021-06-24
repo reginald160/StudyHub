@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace StudyHub.Application.ApplicationResponse
 {
+	/// <summary>
+	/// The Response classes are used to pass response data to the controllers
+	/// </summary>
 	public class StudentResponse
 	{
 		public string Name { get; set; }

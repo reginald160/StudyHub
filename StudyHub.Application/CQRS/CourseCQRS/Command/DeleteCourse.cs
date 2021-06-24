@@ -40,7 +40,7 @@ namespace StudyHub.Application.CQRS.CourseRegistrationCQRS.Command
 					_context.Remove(Course);
 					await _context.SaveChangesAsync();
 
-					//return student data as a reponse data
+					//return student values as a reponse data
 					response.Title = Course.Title;
 					response.Code = Course.Code;
 					return ResponseData.OnUpdateResponse(response);

@@ -18,17 +18,27 @@ namespace StudyHub.API.Controllers
 	[Route("api/[controller]")]
 	[ApiController]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+
 	public class CourseController : ControllerBase
 	{
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
-
+		/// <summary>
+		/// Controller Dependency Injection
+		/// </summary>
+		/// <param name="mediator"></param>
+		/// <param name="mapper"></param>
 		public CourseController(IMediator mediator, IMapper mapper)
 		{
 			_mediator = mediator;
 			_mapper = mapper;
 		}
 
+		/// <summary>
+		/// Returns all the list of registered courses
+		/// </summary>
+		/// <param name="token"></param>
+		/// <returns></returns>
 		[HttpGet("[action]")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(201, Type = typeof(CourseUtilityDTO))]
@@ -42,6 +52,11 @@ namespace StudyHub.API.Controllers
 			return response.Status.Equals(APIConstants.SuccessStatus) ? Ok(response) : NotFound(response);
 
 		}
+		/// <summary>
+		/// Creates new records
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
 
 		[HttpPost("[action]")]
 		[ProducesResponseType(201, Type = typeof(CourseUtilityDTO))]
@@ -54,12 +69,16 @@ namespace StudyHub.API.Controllers
 			if (ModelState.IsValid)
 			{
 				var result = await _mediator.Send(new CreateCourse.Command { Course = request });
-				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : Unauthorized(result);
+				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : BadRequest(result);
 			}
 			return BadRequest(ModelState);
 		}
 
-
+		/// <summary>
+		/// Editing/Updating of existing record
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
 		[HttpPatch("[action]")]
 		[ProducesResponseType(201, Type = typeof(UpdateCourseDTO))]
 		[ProducesResponseType(StatusCodes.Status201Created)]
@@ -75,7 +94,11 @@ namespace StudyHub.API.Controllers
 			}
 			return BadRequest(ModelState);
 		}
-
+		/// <summary>
+		/// Deletion of existing records
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		[HttpDelete("[action]")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,7 +117,13 @@ namespace StudyHub.API.Controllers
 
 		}
 
-
+		/// <summary>
+		/// CONDITIONs
+		/// 1. Students register a unique course
+		/// 2. Not more than three courses must be registered
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
 		[HttpPost("[action]")]
 		[ProducesResponseType(201, Type = typeof(StudentRegistration))]
 		[ProducesResponseType(StatusCodes.Status201Created)]
@@ -107,25 +136,31 @@ namespace StudyHub.API.Controllers
 			{
 				var map = _mapper.Map<RegistrationDTO>(request);
 				var result = await _mediator.Send(new Registration.Command { Registration = map });
-				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : Unauthorized(result);
+				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : BadRequest(result);
 			}
 			return BadRequest(ModelState);
 		}
 
-
+		/// <summary>
+		/// CONDITIONs
+		/// 1. Teachers register a unique course
+		/// 2. Not more than three courses must be registered
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
 		[HttpPost("[action]")]
 		[ProducesResponseType(201, Type = typeof(TeachersRegistration))]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		[ProducesDefaultResponseType]
-		public async Task<IActionResult> TeachersCourseRegistration([FromBody] StudentRegistration request)
+		public async Task<IActionResult> TeachersCourseRegistration([FromBody] TeachersRegistration request)
 		{
 			if (ModelState.IsValid)
 			{
 				var map = _mapper.Map<RegistrationDTO>(request);
 				var result = await _mediator.Send(new Registration.Command { Registration = map });
-				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : Unauthorized(result);
+				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : BadRequest(result);
 			}
 			return BadRequest(ModelState);
 		}

@@ -43,7 +43,7 @@ namespace StudyHub.Application.CQRS.StudentCQRS.Command
 					//return student data as a reponse data
 					response.Name = student.FullName;
 					response.RegNumber = student.RegNumber;
-					return ResponseData.OnUpdateResponse(response);
+					return ResponseData.OnDeleteResponse(response);
 
 				}
 				catch (Exception exp)

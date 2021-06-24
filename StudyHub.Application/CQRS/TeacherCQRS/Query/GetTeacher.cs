@@ -41,12 +41,19 @@ namespace StudyHub.Application.CQRS.StudentCQRS.Query
 				Teacher students = new Teacher();
 				try
 				{
-					if (request.Id.Equals(null) && !String.IsNullOrWhiteSpace(request.StaffCode))
+					if (request.Id.Equals(Guid.Empty) && !String.IsNullOrWhiteSpace(request.StaffCode))
+					{
 						students = await _db.Teachers.Where(x => x.StaffCode.Contains(request.StaffCode)).FirstOrDefaultAsync();
-					students = await _db.Teachers.Where(x => x.Id.Equals(request.Id)).FirstOrDefaultAsync();
+					}
+					else
+					{
+						students = await _db.Teachers.Where(x => x.Id.Equals(request.Id)).FirstOrDefaultAsync();
+					}
 
-					var record = _mapper.Map<TeachersIndexDTO>(students);
+					if (students == null)
+						return ResponseData.NotFoundResponse(null, "record not found");
 
+					var record = _mapper.Map<TeachersIndexDTO>(students);	
 					return ResponseData.OnSuccess(record);
 				}
 				catch (Exception exp)

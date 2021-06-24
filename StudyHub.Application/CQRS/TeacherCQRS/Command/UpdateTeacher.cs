@@ -45,7 +45,6 @@ namespace StudyHub.Application.CQRS.TeacherCQRS.Command
 
 					//return student data as a reponse data
 					response.Name = teacher.FullName;
-					response.RegNumber = teacher.StaffCode;
 					return ResponseData.OnUpdateResponse(response);
 
 				}

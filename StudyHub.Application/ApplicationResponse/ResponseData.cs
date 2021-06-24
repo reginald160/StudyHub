@@ -41,7 +41,20 @@ namespace StudyHub.Application.ApplicationResponse
 
 			return response;
 		}
+		public static Response OnDeleteResponse(object responseData)
+		{
 
+			Response response = new Response
+			{
+				ResponseCode = ResponseCode.SuccesFullOperation,
+				ResponseMessage = ResponseMessage.RecordOnDeleteMessage,
+				Status = ResponseStatus.Success,
+				Data = responseData
+
+			};
+
+			return response;
+		}
 		public static Response OnUpdateResponse(object responseData)
 		{
 
@@ -108,12 +121,13 @@ namespace StudyHub.Application.ApplicationResponse
 	public static class ResponseMessage
 	{
 		public static string LowDebitAmountMessage = "The Amount to be withdrwal can not be greater than current balance";
-		public static string MessageOnCourseOverFlow = "You can not register more than three course";
+		public static string MessageOnCourseOverFlow = "You can not register more than three courses";
 		public static string MessageOnUniqueCourse = "You have registered this course and can not register a course twice";
 		public static string SuccesFullOperationMessage = "Successful operation";
 		public static string FailedOperationMessage = "Failed operation";
 		public static string RecordOnCreationMessage = "Record has been created Successfuly";
 		public static string RecordOnUpdateMessage = "Record has been Updated Successfuly";
+		public static string RecordOnDeleteMessage = "Record has been deleted Successfuly";
 
 	}
 

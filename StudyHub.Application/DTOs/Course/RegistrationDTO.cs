@@ -13,6 +13,8 @@ namespace StudyHub.Application.DTOs.CourseRegistrationDTO
 		public Guid? CourseId { get; set; }
 		public Guid? StudentId { get; set; }
 		public Guid? TeacherId { get; set; }
+		public RegistrationEntity Entity { get; set; }
+		public DateTimeOffset CreatedDate { get; set; }
 
 	}
 }

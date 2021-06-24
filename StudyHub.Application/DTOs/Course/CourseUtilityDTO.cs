@@ -10,8 +10,10 @@ namespace StudyHub.Application.DTOs.CourseDTO
 	public class CourseUtilityDTO
 	{
 		[Required]
+		[MaxLength(150)]
 		public string Title { get; set; }
 		[Required]
+		[MaxLength(5)]
 		public string Code { get; set; }
 		[Required]
 		public string Description { get; set; }

@@ -7,6 +7,7 @@ using StudyHub.Application.CQRS.TeacherCQRS.Command;
 using StudyHub.Application.CQRS.TeacherCQRS.Query;
 using StudyHub.Application.DTOs.Common;
 using StudyHub.Application.DTOs.Teacher;
+using StudyHub.Application.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,9 +49,13 @@ namespace StudyHub.API.Controllers
 		[ProducesDefaultResponseType]
 		//[Authorize]
 		public async Task<IActionResult> GetTeachersById(Guid id, CancellationToken token)
-		{
-			var response = await _mediator.Send(new GetTeacher.Query { Id = id});
-			return response.Status.Equals(APIConstants.SuccessStatus) ? Ok(response) : NotFound(response);
+		{	
+			if(LogicHelper.IsValidGuid(id.ToString()).Equals(true))
+			{
+				var response = await _mediator.Send(new GetTeacher.Query { Id = id });
+				return response.Status.Equals(APIConstants.SuccessStatus) ? Ok(response) : NotFound(response);
+			}
+			return BadRequest(id);
 
 		}
 
@@ -80,19 +85,19 @@ namespace StudyHub.API.Controllers
 			if (ModelState.IsValid)
 			{
 				var result = await _mediator.Send(new CreateTeacher.Command { Teacher = request });
-				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : Unauthorized(result);
+				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : BadRequest(result);
 			}
 			return BadRequest(ModelState);
 		}
 
 
 		[HttpPatch("[action]")]
-		[ProducesResponseType(201, Type = typeof(NumenclatureDTO))]
+		[ProducesResponseType(201, Type = typeof(UpdateTeachersDTO))]
 		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		[ProducesDefaultResponseType]
-		public async Task<IActionResult> UpdateTeacher([FromBody] NumenclatureDTO request)
+		public async Task<IActionResult> UpdateTeacher([FromBody] UpdateTeachersDTO request)
 		{
 			if (ModelState.IsValid)
 			{

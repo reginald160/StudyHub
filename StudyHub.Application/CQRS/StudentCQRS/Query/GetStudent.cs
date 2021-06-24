@@ -42,12 +42,19 @@ namespace StudyHub.Application.CQRS.StudentCQRS.Query
 				Student students = new Student();
 				try
 				{
-					if(request.Id.Equals(null) && !String.IsNullOrWhiteSpace(request.RegNumber))
+					if(request.Id.Equals(Guid.Empty) && !String.IsNullOrWhiteSpace(request.RegNumber))
+					{
 						students = await _db.Students.Where(x => x.RegNumber.Contains(request.RegNumber)).FirstOrDefaultAsync();
-					students = await _db.Students.Where(x => x.Id.Equals(request.Id)).FirstOrDefaultAsync();
-
+					}
+					else
+					{
+						students = await _db.Students.Where(x => x.Id.Equals(request.Id)).FirstOrDefaultAsync();
+					}
+							
 					var record = _mapper.Map<StudentIndexDTO>(students);
 
+					if(record == null)
+						return ResponseData.NotFoundResponse(null, "Value can not be found");
 					return ResponseData.OnSuccess(record);
 				}
 				catch (Exception exp)
