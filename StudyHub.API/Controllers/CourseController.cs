@@ -1,10 +1,15 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudyHub.API.Helpers;
 using StudyHub.Application.CQRS.CourseRegistrationCQRS.Command;
 using StudyHub.Application.CQRS.CourseRegistrationCQRS.Query;
+using StudyHub.Application.Cryptography;
 using StudyHub.Application.DTOs.CourseDTO;
 using StudyHub.Application.DTOs.CourseRegistrationDTO;
 using System;
@@ -17,35 +22,30 @@ namespace StudyHub.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	//[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[EnableCors("_myAllowSpecificOrigins")]
 
-	public class CourseController : ControllerBase
+	public class CourseController : BaseController
 	{
-		private readonly IMediator _mediator;
-		private readonly IMapper _mapper;
-		/// <summary>
-		/// Controller Dependency Injection
-		/// </summary>
-		/// <param name="mediator"></param>
-		/// <param name="mapper"></param>
-		public CourseController(IMediator mediator, IMapper mapper)
-		{
-			_mediator = mediator;
-			_mapper = mapper;
-		}
+        public CourseController(IMediator mediator, IMapper mapper, IWebHostEnvironment hostEnvironment, ICryptographyService cryptographyServices) : base(mediator, mapper, hostEnvironment, cryptographyServices)
+        {
+        }
 
-		/// <summary>
-		/// Returns all the list of registered courses
-		/// </summary>
-		/// <param name="token"></param>
-		/// <returns></returns>
-		[HttpGet("[action]")]
+
+
+
+        /// <summary>
+        /// Returns all the list of registered courses
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet("[action]")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(201, Type = typeof(CourseUtilityDTO))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		[ProducesDefaultResponseType]
-		//[Authorize]
+		[Authorize]
 		public async Task<IActionResult> GetAllCourses(CancellationToken token)
 		{
 			var response = await _mediator.Send(new GetAllCourses.Query());
@@ -64,7 +64,7 @@ namespace StudyHub.API.Controllers
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		[ProducesDefaultResponseType]
-		public async Task<IActionResult> CreateCourse([FromBody] CourseUtilityDTO request)
+		public async Task<IActionResult> Create([FromBody] CourseUtilityDTO request)
 		{
 			if (ModelState.IsValid)
 			{
@@ -99,23 +99,43 @@ namespace StudyHub.API.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[HttpDelete("[action]")]
+		//[HttpDelete("[action]")]
+		//[ProducesResponseType(204)]
+		//[ProducesResponseType(StatusCodes.Status404NotFound)]
+		//[ProducesResponseType(StatusCodes.Status500InternalServerError)]
+		////[ProducesDefaultResponseType]
+		////[Authorize]
+		//public async Task<IActionResult> DeleteCourse(Guid id)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+
+		//		var result = await _mediator.Send(new DeleteCourse.Command { Id = id });
+		//		return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : NoContent();
+		//	}
+		//	return BadRequest(ModelState);
+
+		//}
+
+		[HttpPost("[action]")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-		[ProducesDefaultResponseType]
+		//[ProducesDefaultResponseType]
 		//[Authorize]
-		public async Task<IActionResult> DeleteCourse(Guid id)
+		public async Task<IActionResult> DeleteCourse([FromBody] UpdateCourseDTO request)
 		{
 			if (ModelState.IsValid)
 			{
 
-				var result = await _mediator.Send(new DeleteCourse.Command { Id = id });
+				var result = await _mediator.Send(new DeleteCourse.Command { Id = (Guid)request.Id });
 				return result.ResponseCode.Equals(APIConstants.Ok) ? Ok(result) : NoContent();
 			}
 			return BadRequest(ModelState);
 
 		}
+
+
 
 		/// <summary>
 		/// CONDITIONs

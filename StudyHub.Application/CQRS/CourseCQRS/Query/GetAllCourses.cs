@@ -36,7 +36,7 @@ namespace StudyHub.Application.CQRS.CourseRegistrationCQRS.Query
 
 			public async Task<Response> Handle(Query request, CancellationToken cancellationToken)
 			{
-
+				var courses1 = new List<CourseUtilityDTO>();
 				Response response = new Response();
 				try
 				{
@@ -44,13 +44,15 @@ namespace StudyHub.Application.CQRS.CourseRegistrationCQRS.Query
 					var courses =  _db.Courses
 						.ProjectTo<CourseUtilityDTO>(_mapper.ConfigurationProvider)
 						.OrderBy(x => x.Title).ToList();
-						//.ToList(cancellationToken);
-
+					//.ToList(cancellationToken);
+					await _db.SaveChangesAsync();
+					courses1 = courses;
 					return ResponseData.OnSuccess(courses);
 				}
 				catch (Exception exp)
 				{
-					return ResponseData.NotFoundResponse(null, exp.Message);
+				var error = ResponseData.NotFoundResponse(null, exp.Message);
+					return error;
 				}
 
 			}

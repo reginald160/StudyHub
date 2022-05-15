@@ -2,7 +2,9 @@
 using StudyHub.Infrastructure.Persistence.Data;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -45,7 +47,30 @@ namespace StudyHub.Application.Helpers
 			Guid x;
 			return Guid.TryParse(value, out x);
 		}
+		public static Attribute GetClassAttribute(Type classType, Type attributeType)
+		{
+			var attr = Attribute.GetCustomAttributes(classType, attributeType, true);
+			return attr.Length > 0 ? attr[0] : null;
+		}
+		public static T GetClassAttribute<T>(Type classType) where T : Attribute
+		{
+			return GetClassAttribute(classType, typeof(T)) as T;
+		}
 
+		public static string GetClassDisplayName(Type classType)
+		{
+			var attr = GetClassAttribute<DisplayNameAttribute>(classType);
+
+			return attr != null
+				? attr.DisplayName
+				: classType.Name;
+		}
+
+		public static IEnumerable<Type> GetAllInterfaceImplementers(Type interfaceName)
+		{
+			var types = Assembly.GetCallingAssembly().GetTypes().ToList();
+			return types.Where(t => t.GetInterfaces().Contains(interfaceName));
+		}
 		public static string GetStaffCode(ApplicationDbContext _context)
 		{
 			string result = String.Empty;

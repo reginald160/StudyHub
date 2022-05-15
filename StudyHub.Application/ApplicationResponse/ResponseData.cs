@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static StudyHub.Domain.Enum.DomainEnum;
 
 namespace StudyHub.Application.ApplicationResponse
 {
@@ -19,7 +20,7 @@ namespace StudyHub.Application.ApplicationResponse
 			{
 				ResponseCode = ResponseCode.FailedOperation,
 				ResponseMessage = responseMessage,
-				Status = ResponseStatus.Failed,
+				Status = ResponseStatus.Failed.ToString(),
 				Data = responseData
 
 			};
@@ -34,7 +35,7 @@ namespace StudyHub.Application.ApplicationResponse
 			{
 				ResponseCode = ResponseCode.SuccesFullOperation,
 				ResponseMessage = ResponseMessage.RecordOnCreationMessage,
-				Status = ResponseStatus.Success,
+				Status = ResponseStatus.Success.ToString(),
 				Data = responseData
 
 			};
@@ -48,7 +49,7 @@ namespace StudyHub.Application.ApplicationResponse
 			{
 				ResponseCode = ResponseCode.SuccesFullOperation,
 				ResponseMessage = ResponseMessage.RecordOnDeleteMessage,
-				Status = ResponseStatus.Success,
+				Status = ResponseStatus.Success.ToString(),
 				Data = responseData
 
 			};
@@ -62,7 +63,7 @@ namespace StudyHub.Application.ApplicationResponse
 			{
 				ResponseCode = ResponseCode.SuccesFullOperation,
 				ResponseMessage = ResponseMessage.RecordOnUpdateMessage,
-				Status = ResponseStatus.Success,
+				Status = ResponseStatus.Success.ToString(),
 				Data = responseData
 
 			};
@@ -77,7 +78,7 @@ namespace StudyHub.Application.ApplicationResponse
 			{
 				ResponseCode = ResponseCode.SuccesFullOperation,
 				ResponseMessage = ResponseMessage.SuccesFullOperationMessage,
-				Status = ResponseStatus.Success,
+				Status = ResponseStatus.Success.ToString(),
 				Data = responseData
 
 			};
@@ -91,7 +92,7 @@ namespace StudyHub.Application.ApplicationResponse
 			{
 				ResponseCode = ResponseCode.NotFound,
 				ResponseMessage = responseMessage,
-				Status = ResponseStatus.Failed,
+				Status = ResponseStatus.Failed.ToString(),
 				Data = responseData
 
 			};
@@ -131,11 +132,11 @@ namespace StudyHub.Application.ApplicationResponse
 
 	}
 
-	public static class ResponseStatus
-	{
-		public static string Failed = ApplicationConstants.FailedStatus;
-		public static string Success = ApplicationConstants.SuccessStatus;
-	}
+	//public static class ResponseStatus
+	//{
+	//	public static string Failed = ApplicationConstants.FailedStatus;
+	//	public static string Success = ApplicationConstants.SuccessStatus;
+	//}
 	public static class ResponseCode
 	{
 		public static int InvalidUser = 003;

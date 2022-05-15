@@ -19,6 +19,94 @@ namespace StudyHub.Infrastructure.Migrations
                 .HasAnnotation("ProductVersion", "5.0.7")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("StudyHub.Domain.Models.AccountUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DOB")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("EditedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HashPasswordSalt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Imageurl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InvitationCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsEmailVerified")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsProfiled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferalCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefereeCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("StudyHub.Domain.Models.Course", b =>
                 {
                     b.Property<Guid>("Id")
@@ -138,6 +226,38 @@ namespace StudyHub.Infrastructure.Migrations
                     b.ToTable("CourseRegistrations");
                 });
 
+            modelBuilder.Entity("StudyHub.Domain.Models.ErrorModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ErrorDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ErrorShortDescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExceptionType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("InnerExceptionMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("LogId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("StackTrace")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ErrorModels");
+                });
+
             modelBuilder.Entity("StudyHub.Domain.Models.NumberSequence", b =>
                 {
                     b.Property<Guid>("Id")
@@ -168,6 +288,80 @@ namespace StudyHub.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("NumberSequences");
+                });
+
+            modelBuilder.Entity("StudyHub.Domain.Models.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AccountUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CancelUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CompletedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CompletionUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("EditedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RedirectionUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountUserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("StudyHub.Domain.Models.ResponseRequestModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("AccountUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FullRequest")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullResponse")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ResponseTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountUserId");
+
+                    b.ToTable("ResponseRequestModels");
                 });
 
             modelBuilder.Entity("StudyHub.Domain.Models.Student", b =>
@@ -212,7 +406,12 @@ namespace StudyHub.Infrastructure.Migrations
                     b.Property<string>("Role")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Students");
                 });
@@ -253,9 +452,89 @@ namespace StudyHub.Infrastructure.Migrations
                     b.Property<string>("StaffCode")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Teachers");
+                });
+
+            modelBuilder.Entity("StudyHub.Domain.Models.UserProfile", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("DOB")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset>("EditedDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Imageurl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Role")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("State")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ZipCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserProfiles");
+                });
+
+            modelBuilder.Entity("StudyHub.Domain.Models.AccountUser", b =>
+                {
+                    b.HasOne("StudyHub.Domain.Models.AccountUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("StudyHub.Domain.Models.CourseRegistration", b =>
@@ -277,6 +556,53 @@ namespace StudyHub.Infrastructure.Migrations
                     b.Navigation("Student");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("StudyHub.Domain.Models.Order", b =>
+                {
+                    b.HasOne("StudyHub.Domain.Models.AccountUser", "AccountUser")
+                        .WithMany()
+                        .HasForeignKey("AccountUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AccountUser");
+                });
+
+            modelBuilder.Entity("StudyHub.Domain.Models.ResponseRequestModel", b =>
+                {
+                    b.HasOne("StudyHub.Domain.Models.AccountUser", "AccountUser")
+                        .WithMany()
+                        .HasForeignKey("AccountUserId");
+
+                    b.Navigation("AccountUser");
+                });
+
+            modelBuilder.Entity("StudyHub.Domain.Models.Student", b =>
+                {
+                    b.HasOne("StudyHub.Domain.Models.AccountUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("StudyHub.Domain.Models.Teacher", b =>
+                {
+                    b.HasOne("StudyHub.Domain.Models.AccountUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("StudyHub.Domain.Models.UserProfile", b =>
+                {
+                    b.HasOne("StudyHub.Domain.Models.AccountUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }

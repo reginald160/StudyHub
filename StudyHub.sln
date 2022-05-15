@@ -3,13 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyHub.API", "StudyHub.API\StudyHub.API.csproj", "{B328364C-6386-4F76-8438-9C640051D8B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudyHub.API", "StudyHub.API\StudyHub.API.csproj", "{B328364C-6386-4F76-8438-9C640051D8B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyHub.Domain", "StudyHub.Domain\StudyHub.Domain.csproj", "{34E877FE-C6A5-4142-9949-982C43863489}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudyHub.Domain", "StudyHub.Domain\StudyHub.Domain.csproj", "{34E877FE-C6A5-4142-9949-982C43863489}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyHub.Application", "StudyHub.Application\StudyHub.Application.csproj", "{E2A46E03-DC6A-470E-851C-79EC2D17A661}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudyHub.Application", "StudyHub.Application\StudyHub.Application.csproj", "{E2A46E03-DC6A-470E-851C-79EC2D17A661}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyHub.Infrastructure", "StudyHub.Persistence\StudyHub.Infrastructure.csproj", "{A7C4367F-4FC8-408D-AF6C-5BB3C047D521}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyHub.UnitTest", "StudyHub.UnitTest\StudyHub.UnitTest.csproj", "{B01C1632-D94E-468D-B9A7-4E674001002C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudyHub.UI", "StudyHub.UI\StudyHub.UI.csproj", "{71F50388-42B7-431F-B9FC-A1531904CDA6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StudyHub.Infrastructure", "StudyHub.Persistence\StudyHub.Infrastructure.csproj", "{A53C55EA-B29F-433F-853C-AF13D95C0A9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudyHub.Payment", "StudyHub.Payment\StudyHub.Payment.csproj", "{12976D60-513B-492C-81A7-0EC36B8583EB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,10 +35,22 @@ Global
 		{E2A46E03-DC6A-470E-851C-79EC2D17A661}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2A46E03-DC6A-470E-851C-79EC2D17A661}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E2A46E03-DC6A-470E-851C-79EC2D17A661}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A7C4367F-4FC8-408D-AF6C-5BB3C047D521}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A7C4367F-4FC8-408D-AF6C-5BB3C047D521}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A7C4367F-4FC8-408D-AF6C-5BB3C047D521}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A7C4367F-4FC8-408D-AF6C-5BB3C047D521}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B01C1632-D94E-468D-B9A7-4E674001002C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B01C1632-D94E-468D-B9A7-4E674001002C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B01C1632-D94E-468D-B9A7-4E674001002C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B01C1632-D94E-468D-B9A7-4E674001002C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71F50388-42B7-431F-B9FC-A1531904CDA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71F50388-42B7-431F-B9FC-A1531904CDA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71F50388-42B7-431F-B9FC-A1531904CDA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71F50388-42B7-431F-B9FC-A1531904CDA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A53C55EA-B29F-433F-853C-AF13D95C0A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A53C55EA-B29F-433F-853C-AF13D95C0A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A53C55EA-B29F-433F-853C-AF13D95C0A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A53C55EA-B29F-433F-853C-AF13D95C0A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12976D60-513B-492C-81A7-0EC36B8583EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12976D60-513B-492C-81A7-0EC36B8583EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12976D60-513B-492C-81A7-0EC36B8583EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12976D60-513B-492C-81A7-0EC36B8583EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

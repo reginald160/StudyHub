@@ -47,14 +47,14 @@ namespace StudyHub.Application.CQRS.CourseRegistrationCQRS.Command
 
 						if (teacherRegCourseCount >= 1)
 							return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnUniqueCourse,
-								ResponseStatus.Failed, ResponseCode.Unathorized);
+								ResponseStatus.Failed.ToString(), ResponseCode.Unathorized);
 
 
 						int teacherRegCount = _context.CourseRegistrations
 										.Where(x => x.TeacherId.Equals(request.Registration.TeacherId)).Count();
 						if (teacherRegCount >= 3)
 							return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnCourseOverFlow,
-								ResponseStatus.Failed, ResponseCode.Unathorized);
+								ResponseStatus.Failed.ToString(), ResponseCode.Unathorized);
 						request.Registration.Entity = RegistrationEntity.Teacher;
 
 					}
@@ -66,13 +66,13 @@ namespace StudyHub.Application.CQRS.CourseRegistrationCQRS.Command
 
 						if (studentRegCourseCount >= 1)
 							return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnUniqueCourse,
-								ResponseStatus.Failed, ResponseCode.Unathorized);
+								ResponseStatus.Failed.ToString(), ResponseCode.Unathorized);
 
 						int studentRegCount = _context.CourseRegistrations.Where(x => x.StudentId.Equals(request.Registration.StudentId)).Count();
 
 						if (studentRegCount >= 3)
 							return ResponseData.GlobalResponse(request.Registration, ResponseMessage.MessageOnCourseOverFlow,
-								ResponseStatus.Failed, ResponseCode.Unathorized);
+								ResponseStatus.Failed.ToString(), ResponseCode.Unathorized);
 
 						request.Registration.Entity = RegistrationEntity.Student;
 					}

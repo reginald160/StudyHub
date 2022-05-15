@@ -21,6 +21,17 @@ namespace StudyHub.Infrastructure.Persistence.Data
 		}
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
+			//var typesToRegister = Assembly.Load("StudyHub.Infrastructure").GetTypes().
+			// Where(type => !string.IsNullOrEmpty(type.Namespace)).
+			// Where(type => type.GetInterface(typeof(IEntityTypeConfiguration<>).FullName) != null);
+
+			//foreach (var type in typesToRegister)
+			//{
+			//	dynamic configurationInstance = Activator.CreateInstance(type);
+			//	builder.ApplyConfiguration(configurationInstance);
+
+			//}
+
 			builder.ApplyConfiguration(new StudentConfiguration());
 			builder.ApplyConfiguration(new CourseConfiguration());
 			builder.ApplyConfiguration(new StudentConfiguration());
@@ -29,11 +40,19 @@ namespace StudyHub.Infrastructure.Persistence.Data
 
 
 
-
+		public DbSet<AccountUser> Users{ get; set; }
+		public DbSet<UserProfile> UserProfiles { get; set; }
 		public DbSet<Student> Students { get; set; }
 		public DbSet<Course> Courses { get; set; }
 		public DbSet<NumberSequence> NumberSequences { get; set; }
 		public DbSet<Teacher> Teachers { get; set; }
 		public DbSet<CourseRegistration> CourseRegistrations { get; set; }
+		public DbSet<ErrorModel> ErrorModels { get; set; }
+		public DbSet<ResponseRequestModel> ResponseRequestModels { get; set; }
+		public DbSet<Order> Orders { get; set; }
+
+
+
+
 	}
 }

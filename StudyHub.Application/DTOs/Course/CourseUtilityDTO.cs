@@ -9,7 +9,8 @@ namespace StudyHub.Application.DTOs.CourseDTO
 {
 	public class CourseUtilityDTO
 	{
-		[Required]
+        public Guid? Id { get; set; }
+        [Required]
 		[MaxLength(150)]
 		public string Title { get; set; }
 		[Required]

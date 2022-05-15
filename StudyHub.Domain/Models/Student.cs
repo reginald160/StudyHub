@@ -14,6 +14,8 @@ namespace StudyHub.Domain.Models
 			Role = DomainConstants.StudentRole;
 		}
 		public string RegNumber { get; set; }
+
+		
 		
 	}
 }

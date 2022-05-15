@@ -1,0 +1,112 @@
+Index: WebPortal/Source/Controllers/Procurement/ProcurementInvoiceController.cs
+===================================================================
+--- WebPortal/Source/Controllers/Procurement/ProcurementInvoiceController.cs	(revision 11822)
++++ WebPortal/Source/Controllers/Procurement/ProcurementInvoiceController.cs	(working copy)
+@@ -33,6 +33,7 @@
+ using SDSD.Toolbar;
+ using WebPortal.Models.Pms;
+ using WebPortal.Repositories.Procurement;
++using SDSD.ServiceProviders;
+ 
+ namespace WebPortal.Controllers.Procurement
+ {
+@@ -151,7 +152,16 @@
+ 					},
+ 				}
+ 			};
++			Admin.Buttons.GridButtons.Add(new AdminModuleLinkButton
++			{
++				Id = "idInvoiceVerificationEmail",
++				Hint = "Send for Verification",
++				Url = Url.Action("SendMailTo", new { id = "{Id}" }),
++				Icon = "fa-envelope",
++                Target = "_blank",
++				OnClickTemplate = "return MailToHelper.onClick(this)",
+ 
++			});
+ 			Admin.Components = new List<IAdminComponent>
+ 			{
+ 				new AdminHidden
+@@ -2145,6 +2155,47 @@
+ 			if (((ProcurementInvoiceViewModel)model).TotalCost > ((ProcurementInvoiceViewModel)model).BudgetVarianceCost)
+ 				return new StyleFormatter { Bold = true, Color = "red", TextValue = value };
+ 			return null;
++		}	
++		public ActionResult SendMailTo(Guid id)
++		{
++			using (var context = new AppDbContext())
++			{
++				var model = context.ProcurementInvoices.Find(id);
++				try
++				{
++					
++					if (model == null)
++						return AdminResult(false);
++				}
++				catch (Exception ex)
++				{
++					return ex.ToAdminJsonResult();
++				}
++			
++				var Url = Request.Url.GetLeftPart(UriPartial.Authority).ToString(CultureInfo.InvariantCulture) +
++						"/ProcurementInvoice/Edit/" + id;
++
++				var emailTemplateModel = new ProcurementInvoiceMailVerificationViewModel
++				{
++					
++					InvoiceCreatedBy = model.CreatedByUser.FullName,
++					InvoiceCreatedByEmail = model.PurchaseOrderId!= null ? model.PurchaseOrder.CreatedByUser.Email : model.DirectPurchaseOrder.CreatedByUser.Email,
++					PONumber = model.DirectPurchaseOrderId != null
++						? model.DirectPurchaseOrder.Code : model.PurchaseOrder.Code,
++					Url = Url
++
++				};
++				var emailTemplate = new EmailTemplate();
++
++				emailTemplate.Subject = "Invoice Number Verification : " + emailTemplateModel.PONumber;
++				emailTemplate.To = emailTemplateModel.InvoiceCreatedByEmail;
++
++								
++				emailTemplate.Body = "Dear Sir/Madam,\r\n\r\nFind below invoice for verification \r\n\r\n {Url} " +
++						"\r\n\r\n\r\n Thanks & Regards \r\n {InvoiceCreatedBy}";
++				
++				return MailHelper.CreateMailFromTemplate(emailTemplate, emailTemplateModel, this);
++			}
+ 		}
+ 	}
+ }
+\ No newline at end of file
+Index: WebPortal/Source/ViewModels/Procurement/ProcurementInvoiceMailVerificationViewModel.cs
+===================================================================
+--- WebPortal/Source/ViewModels/Procurement/ProcurementInvoiceMailVerificationViewModel.cs	(nonexistent)
++++ WebPortal/Source/ViewModels/Procurement/ProcurementInvoiceMailVerificationViewModel.cs	(working copy)
+@@ -0,0 +1,16 @@
++﻿using SDSD.Core;
++using System;
++using System.Collections.Generic;
++using System.Linq;
++using System.Web;
++
++namespace WebPortal.ViewModels.Procurement
++{
++    public class ProcurementInvoiceMailVerificationViewModel :   ProcurementBaseMailTemplateViewModel, IEmailTemplateViewModel
++    {
++		public string InvoiceCreatedBy { get; set; }
++		public string InvoiceCreatedByEmail { get; set; }
++		public string PONumber { get; set; }
++		public string Url { get; set; }
++	}
++}
+\ No newline at end of file
+Index: WebPortal/Source/WebPortal.csproj
+===================================================================
+--- WebPortal/Source/WebPortal.csproj	(revision 11822)
++++ WebPortal/Source/WebPortal.csproj	(working copy)
+@@ -1474,6 +1474,7 @@
+     <Compile Include="ViewModels\Procurement\ProcurementForwardingQuotationMailTemplateViewModel.cs" />
+     <Compile Include="ViewModels\Procurement\ProcurementComparisonOfQuotationMailTemplateViewModel.cs" />
+     <Compile Include="ViewModels\Procurement\ProcurementCancelPOMailTemplateViewModel.cs" />
++    <Compile Include="ViewModels\Procurement\ProcurementInvoiceMailVerificationViewModel.cs" />
+     <Compile Include="ViewModels\Procurement\ProcurementInvoicePaymentTemplateViewModel.cs" />
+     <Compile Include="ViewModels\Procurement\ProcurementInvoicesForSupplierPaymentViewModel.cs" />
+     <Compile Include="ViewModels\Procurement\ProcurementInvoiceToOwnerReportTemplateViewModel.cs" />

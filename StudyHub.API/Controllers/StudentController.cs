@@ -1,9 +1,13 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using AutoMapper.Configuration;
+using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using StudyHub.API.Helpers;
 using StudyHub.Application.CQRS.StudentCQRS.Command;
 using StudyHub.Application.CQRS.StudentCQRS.Query;
+using StudyHub.Application.Cryptography;
 using StudyHub.Application.DTOs.Common;
 using StudyHub.Application.DTOs.Student;
 using System;
@@ -16,21 +20,19 @@ namespace StudyHub.API.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	public class StudentController : ControllerBase
+	public class StudentController : BaseController
 	{
-		private readonly IMediator _mediator;
+        public StudentController(IMediator mediator, IMapper mapper, IWebHostEnvironment hostEnvironment, ICryptographyService cryptographyServices) : base(mediator, mapper, hostEnvironment, cryptographyServices)
+        {
+        }
 
-		public StudentController(IMediator mediator)
-		{
-			_mediator = mediator;
-		}
 
-		/// <summary>
-		/// Gets the list of all rergistered students
-		/// </summary>
-		/// <param name="token"></param>
-		/// <returns></returns>
-		[HttpGet("[action]")]
+        /// <summary>
+        /// Gets the list of all rergistered students
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        [HttpGet("[action]")]
 		[ProducesResponseType(204)]
 		[ProducesResponseType(201, Type = typeof(IEnumerable<StudentIndexDTO>))]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]

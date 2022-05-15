@@ -12,5 +12,26 @@ namespace StudyHub.Domain.Enum
 		{
 			Teacher, Student
 		}
-	}
+
+        public enum OrderStatus
+        {
+            Failed,
+            Completed,
+            Initiated
+        }
+
+        public enum ResponseStatus
+        {
+            Success = 1,
+            ServerError,
+            NotFound,
+            Conflict,
+            Unauthorized,
+            AwaitingVerification,
+            UnSupportedFileFormat,
+            PlanAlreadyExist,
+            UserAlreadyExist,
+            Failed
+        }
+    }
 }
